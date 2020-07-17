@@ -878,7 +878,7 @@ GameObject:
   - component: {fileID: 783167153}
   - component: {fileID: 783167152}
   m_Layer: 5
-  m_Name: Win Text
+  m_Name: Win Lose Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -934,7 +934,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: WL Text
 --- !u!222 &783167153
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1028,7 +1028,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 786978278}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 4, z: -4}
+  m_LocalPosition: {x: 0, y: 4.5, z: -4.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1899,13 +1899,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b35fa0178ae07a4790821429283d05b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
+  speed: 5
+  timeRemaining: 20
+  timerIsRunning: 0
   countText: {fileID: 1255116828}
-  winText: {fileID: 783167152}
+  winLoseText: {fileID: 783167152}
   timeText: {fileID: 49141218}
   resetText: {fileID: 1503713471}
-  secondsLeft: 20
-  takingAway: 0
 --- !u!54 &2108957522
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -7,40 +7,50 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour {
 
 	public float speed;
+    public float timeRemaining;
+    public bool timerIsRunning = false;
+
 	public Text countText;
-	public Text winText;
+	public Text winLoseText;
 	public Text timeText;
 	public Text resetText;
-
-	public int secondsLeft;
-	public bool takingAway = false;
 
 	private Rigidbody rb;
 	private int count;
 
-	void Start ()
+    void Start ()
 	{
 		rb = GetComponent<Rigidbody> ();
 		count = 0;
 		SetCountText ();
-		winText.text = "";
+		winLoseText.text = "";
 		resetText.text = "";
-		timeText.GetComponent<Text> ().text = "0:" + secondsLeft;
+
+        timerIsRunning = true;
 	}
 
 	void Update ()
 	{
-		if (takingAway == false && secondsLeft > 0)
-		{
-			StartCoroutine (TimerTake());
-		}
+        if (timerIsRunning)
+        {
+            if (timeRemaining > 0)
+            {
+                timeRemaining -= Time.deltaTime;
+                DisplayTime(timeRemaining);
+            }
+            else
+            {
+                timeRemaining = 0;
+                timerIsRunning = false;
+            }
+        }
 
-		if (secondsLeft <= 0)
-		{
-			winText.text = "You Lose!";
-			resetText.text = "Press <b>SPACE</b> to restart";
-			Time.timeScale = 0;
-		}
+        if (timeRemaining <= 0)
+        {
+            winLoseText.text = "You Lose!";
+            resetText.text = "Press <b>SPACE</b> to restart";
+            Time.timeScale = 0;
+        }
 
 		if (Input.GetKeyDown (KeyCode.Space))
 		{
@@ -49,29 +59,12 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	IEnumerator TimerTake ()
-	{
-		takingAway = true;
-		yield return new WaitForSeconds (1);
-		secondsLeft -= 1;
-		if (secondsLeft < 10)
-		{
-			timeText.GetComponent<Text> ().text = "0:0" + secondsLeft;
-		}
-		else
-		{
-			timeText.GetComponent<Text> ().text = "0:" + secondsLeft;
-		}
-
-		takingAway = false;
-	}
-
 	void SetCountText ()
 	{
 		countText.text = "Collect: " + count.ToString ();
 		if (count >= 12) 
 		{
-			winText.text = "You Win!";
+			winLoseText.text = "You Win!";
 			resetText.text = "Press <b>SPACE</b> to restart";
 			Time.timeScale = 0;
 		}
@@ -92,14 +85,25 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject.CompareTag ("Pick Up"))
 		{
 			other.gameObject.SetActive (false);
-			secondsLeft = secondsLeft + 6;
 			count = count + 1;
 			SetCountText ();
+
+            timeRemaining = timeRemaining + 5;  
 		}
 	}
 
-	void Restart ()
+    void DisplayTime(float timeToDisplay)
+    {
+        timeToDisplay += 1;
+
+        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
+        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
+
+        timeText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
+    }
+
+    void Restart ()
 	{
-		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+		SceneManager.LoadScene ("MiniGame");
 	}
 }
